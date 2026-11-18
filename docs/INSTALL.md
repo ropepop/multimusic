@@ -4,13 +4,13 @@
 
 Both apps need an iPhone on iOS 18 or later, Apple's Music app and an active Apple Music subscription. The routes below use a Mac, full Xcode, Python 3, and signing files that belong to you. This is a self-install project, not an App Store or one-tap web installation.
 
-**Source preview — 18 November 2026.** The revised YouTube Music 1.2/build 49 and Spotify 1.0/build 38 candidates use project-only app identifiers. Earlier iPhone installs used different packages. Signing, installation and playback verification for the revised files are pending. See the dated [verification record](VERIFICATION.md).
+**Prerelease verification — 18 November 2026.** The exact YouTube Music 1.2/build 49 and Spotify 1.0/build 38 packages were signed locally by the recipient. Both passed fresh installation, first launch and Apple Music setup on iPhone. See the [verification record](VERIFICATION.md).
 
 Apple explains [developer account limits](https://developer.apple.com/help/account/basics/about-your-developer-account/) and [supported iOS capabilities](https://developer.apple.com/help/account/reference/supported-capabilities-ios/). Personal Team provisioning normally expires after seven days and is subject to app and device limits. Renewing a signature must retain the same identifiers and shared group if you want to preserve saved state. No purchase or paid enrollment is part of these instructions.
 
 ## Route A: build with Xcode
 
-1. Clone or download this repository and open `Multimusic.xcodeproj`. For a published binary release, use its matching source tag. The current source preview is not an accepted installation release.
+1. Clone or download this repository and open `Multimusic.xcodeproj`. To build the version that corresponds to a binary release, use its matching source tag.
 2. Add your existing Apple account in Xcode Settings → Accounts. Choose your team for both app targets and use automatic signing where your account supports the required capabilities.
 3. Set `MULTIMUSIC_BUNDLE_BASE` to a unique identifier you control. The YouTube app uses that base. The Spotify app uses the same base followed by `.Spotify`. Unsigned packages use the project default `org.multimusic.app`.
 4. Keep the shared Keychain group identical for both apps. The checked-in configuration derives it from `AppIdentifierPrefix`, your bundle base and `.playback`. Do not replace the application prefix with an assumed team ID; those values can differ.
@@ -30,7 +30,7 @@ These produce `build/Multimusic-unsigned.ipa` and `build/MultimusicSpotify-unsig
 
 ## Route B: download an IPA and sign it
 
-Public downloads for 49/38 are pending. When a binary release is published, download both unsigned IPAs, `SHA256SUMS` and `SHA256SUMS.sig` from the same release. Get the signing scripts from that release's source archive and the pinned [Multimusic public key](Multimusic-release-public.pem) through a trusted copy of the source.
+For the prerelease, download `Multimusic-unsigned.ipa`, `MultimusicSpotify-unsigned.ipa`, `SHA256SUMS` and `SHA256SUMS.sig` from the same [GitHub release](../../../releases/tag/2026-11-18). Get the signing scripts from that release's source archive and the pinned [Multimusic public key](Multimusic-release-public.pem) through a trusted copy of the source.
 
 Run the first command in the directory with the public key and downloads. Compare the result with the pinned SHA-256 fingerprint of the DER-encoded public key before running the remaining commands.
 
@@ -50,7 +50,7 @@ Use the same team, bundle base and shared group described in Route A. Xcode can 
 
 Use the provisioning profiles generated for your two app identifiers, or create matching development profiles through your existing developer account where that feature is available. Apple's [development-profile instructions](https://developer.apple.com/help/account/provisioning-profiles/create-a-development-provisioning-profile/) describe the required App ID, development certificate and registered device. Xcode-managed profiles can be inspected through Xcode's signing settings; their storage location depends on the Xcode version. Do not use an unrelated profile merely because it contains a valid certificate.
 
-The phone must be covered by the profiles. Both profiles must grant the same shared group. Free-account end-to-end support is accepted only when shown in the verification record; if Xcode cannot supply the necessary profile or MusicKit service, do not bypass those restrictions.
+The phone must be covered by the profiles. Both profiles must grant the same shared group. Check that your account can provide the required profiles and MusicKit service.
 
 ### Prepare the signer
 
@@ -107,11 +107,11 @@ xcrun devicectl device install app --device DEVICE \
 1. Open Setup, allow music access and verify that the Apple Music subscription and storefront checks succeed.
 2. In Music, turn off Autoplay, Repeat and Shuffle for a predictable finite batch. The app cannot turn off Music's Autoplay setting for you.
 3. Sign in to the provider website inside the app when needed. A stalled Google return may require the app's Reload control.
-4. Select a known song or a small album. Confirm the displayed Apple Music result and playback state, then try pause, next, previous and seeking.
+4. Select a known song or a small album. Confirm the displayed Apple Music result and playback state, then try pause, next, previous and seeking. If the signed-out YouTube Music album view has no Next button, use Next in iOS Now Playing.
 5. Test locking, reopening and using the companion app. Use explicit Restore when the app cannot safely determine the saved queue's state.
 
 Playback and Setup's reference-song action replace Music's current queue. Before testing a new installation, preserve anything you need from the existing queue. Test copies should use a separate bundle base and shared group rather than overwrite an existing installation.
 
 For updates, retain the same bundle identifiers, signing identity and default/shared Keychain groups. Install over the existing test copy without deleting it, then verify login, saved state and two-app cooperation.
 
-A new bundle base creates a separate installation. Provider sign-in, saved queues, caches and local settings stay with the old installation. The new pair starts with a separate playback ownership record, while both pairs still control the same system Music queue. Use one pair at a time. If you previously signed both apps with a custom base from the older source preview, update both companions together because the revised pair uses a new playback service for that base.
+A new bundle base creates a separate installation. Provider sign-in, saved queues, caches and local settings stay with the old installation. The new pair starts with a separate playback ownership record, while both pairs still control the same system Music queue. Use one pair at a time. When updating a pair signed with a custom base from an earlier preview, update both apps together so they use the same playback service.

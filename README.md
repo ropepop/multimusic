@@ -11,7 +11,9 @@ Both apps use your Apple Music subscription for sound. They read the music infor
 
 ## Release status
 
-**Source preview — 18 November 2026.** YouTube Music 1.2/build 49 and Spotify 1.0/build 38 use project-only app identifiers. The revised downloads are unsigned. Earlier iPhone installation checks used different packages. Signing, installation and playback verification for the revised files are pending. See the dated [verification record](docs/VERIFICATION.md).
+**Prerelease verification — 18 November 2026.** The exact YouTube Music 1.2/build 49 and Spotify 1.0/build 38 packages passed recipient signing, fresh installation, first launch and Apple Music setup on iPhone. Each app matched all 14 songs on Daft Punk’s *Discovery* and advanced the Apple Music queue from “One More Time” to “Aerodynamic.” See the [verification record](docs/VERIFICATION.md).
+
+For the prerelease, download the unsigned IPAs and signed checksum manifest from [GitHub Releases](../../releases/tag/2026-11-18).
 
 ## Requirements and installation
 
@@ -34,7 +36,7 @@ Start with [Installation](docs/INSTALL.md). It covers building from source and s
 
 Captured batches contain at most 50 songs that the website has made available. This is not a promise to copy an entire playlist or endless radio queue. Website changes can require an adapter update.
 
-Earlier YouTube builds can show a player-controls warning or stale mini-player text even when native playback controls work. These observations remain compatibility limits until the final release is tested.
+The signed-out YouTube Music album view tested here had no Next button. Use Next in iOS Now Playing in that case.
 
 Matching is based on catalog information and cannot prove that every recording is acoustically identical. An explicit source may use a clean recording when the explicit version is unavailable; the app reports this as `cleanFallback`. A clean source is not silently replaced with an explicit recording. Labeled alternate recordings such as live versions and remixes retain separate matching checks.
 

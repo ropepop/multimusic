@@ -1,5 +1,5 @@
 {
-  "contentSHA256": "2adf56a02293b5d3ed0c6fa365540a42162f3412079cc3168a40e112b34001f4",
+  "contentSHA256": "b45a5253c41c4ddb72d2736e13ce37665a863545a6391f22be6338b5eae8c4cd",
   "files": {
     ".github/ISSUE_TEMPLATE/bug.yml": {
       "executable": false,
@@ -151,7 +151,7 @@
     },
     "README.md": {
       "executable": false,
-      "sha256": "1be3e5288e7aca31716df95773a25b4c77d7b0a868b658d906dc2a00d4c5911a"
+      "sha256": "67b4570868772d22ce255d0b085b38c6f098382ec557006097850d34eef2f5a3"
     },
     "SECURITY.md": {
       "executable": false,
@@ -287,7 +287,7 @@
     },
     "docs/INSTALL.md": {
       "executable": false,
-      "sha256": "8bcb912221c8c715ee8b6b8dd176115dfaf5980ef0b63919acd648e8d2383bdb"
+      "sha256": "fd1584b0aeddf178cb87755d45a19c346b4c548c2fae382a32fa98a652414efd"
     },
     "docs/Multimusic-release-public.pem": {
       "executable": false,
@@ -303,7 +303,7 @@
     },
     "docs/VERIFICATION.md": {
       "executable": false,
-      "sha256": "d5e10cc4ed638f5d29e4e3946c71eb84cfe07713385b8d6e85abb69df34fcc4d"
+      "sha256": "b2f203254f59f14f171d0f9362053fb65dc788b69102e689cc67981a71c1af9b"
     },
     "scripts/package.sh": {
       "executable": true,
