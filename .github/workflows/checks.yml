@@ -1,0 +1,59 @@
+name: Release checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: xcode-27
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Select OpenSSL 3 or 4
+        run: |
+          brew list --versions openssl >/dev/null || brew install openssl
+          echo "$(brew --prefix openssl)/bin" >> "$GITHUB_PATH"
+      - name: Record selected tools
+        run: |
+          xcodebuild -version
+          swift --version
+          node --version
+          python3 --version
+          openssl version
+      - name: Scan source and history for credentials
+        run: |
+          command -v gitleaks >/dev/null || brew install gitleaks
+          gitleaks git --redact --no-banner
+          gitleaks dir . --redact --no-banner
+      - name: Core checks
+        run: swift test
+      - name: Website adapter checks
+        run: node --test Tests/WebAdapter/*.test.mjs
+      - name: Native boundary checks
+        run: python3 Tests/Native/run_checks.py
+      - name: Signing checks
+        run: python3 -m unittest discover -s Tests/Signing
+      - name: Package both unsigned candidates
+        run: |
+          sh scripts/package.sh --app youtube
+          sh scripts/package.sh --app spotify
+          cd build
+          shasum -a 256 Multimusic-unsigned.ipa MultimusicSpotify-unsigned.ipa > SHA256SUMS
+      - uses: actions/upload-artifact@v7.0.2
+        with:
+          name: unsigned-ipa-candidates
+          path: |
+            build/Multimusic-unsigned.ipa
+            build/MultimusicSpotify-unsigned.ipa
+            build/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 7

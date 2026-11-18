@@ -1,0 +1,27 @@
+name: Bug report
+description: Report a reproducible app, matching or installation problem.
+body:
+  - type: markdown
+    attributes:
+      value: Do not upload passwords, cookies, device IDs, signing files, provisioning profiles or private account/playlist data. Use the repository's private vulnerability reporting route for security issues.
+  - type: input
+    id: version
+    attributes:
+      label: App and version
+      description: Multimusic or Multimusic Spotify, version/build and source tag or commit.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Device and installation route
+      description: iPhone/iOS, Mac/Xcode, and source-build or downloaded-IPA route. No device IDs.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps and result
+      description: Smallest reproduction, expected result, actual result and any redacted error.
+    validations:
+      required: true

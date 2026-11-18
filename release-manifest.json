@@ -1,0 +1,326 @@
+{
+  "contentSHA256": "2adf56a02293b5d3ed0c6fa365540a42162f3412079cc3168a40e112b34001f4",
+  "files": {
+    ".github/ISSUE_TEMPLATE/bug.yml": {
+      "executable": false,
+      "sha256": "254a22f7c0b323d4fbc49078fe22815ca9490debc3a9eddd86eedc2e83febd75"
+    },
+    ".github/SUPPORT.md": {
+      "executable": false,
+      "sha256": "6908e4a636b4ad5e85d45af6bbc61ad4ef0a4d8db551658a4a455315dc941c70"
+    },
+    ".github/pull_request_template.md": {
+      "executable": false,
+      "sha256": "9fff27e50a6ee3eaaf71fce1d5f9f1d844e113bb42c9c5c4ec1a46fbaf99edf2"
+    },
+    ".github/workflows/checks.yml": {
+      "executable": false,
+      "sha256": "17444339cedaf5270f1e53932a47be528532c48c01db73bab99a7e0be648b6a0"
+    },
+    ".gitignore": {
+      "executable": false,
+      "sha256": "fb0af0ec6a53af95b3dc9b83c18ef8dc04fa4050290514f51af68acaeb80e220"
+    },
+    "Config.xcconfig": {
+      "executable": false,
+      "sha256": "cea6c4fbc275ec7a2dd71fd341f4298761a6d2d71707be5eee91974e3899f0fc"
+    },
+    "LICENSE": {
+      "executable": false,
+      "sha256": "66ea5af91102648ddb83ca8d1e516e372da112bfbecc923fbd4dadd0138a9fc1"
+    },
+    "Multimusic.xcodeproj/project.pbxproj": {
+      "executable": false,
+      "sha256": "d73849ec67855ec7efba50bba7760b70cfb1f164d3701e10cafd314a5ee6a12d"
+    },
+    "Multimusic.xcodeproj/xcshareddata/xcschemes/Multimusic.xcscheme": {
+      "executable": false,
+      "sha256": "04ba5a026f145ed4ff55025acd03873be62e39d6aa9d65e467556b91f88cf640"
+    },
+    "Multimusic.xcodeproj/xcshareddata/xcschemes/MultimusicSpotify.xcscheme": {
+      "executable": false,
+      "sha256": "8c6ac217a50102b0d6e07527fc18c9a21b6949d7e92b850f9b3759cf57e3445e"
+    },
+    "Multimusic/AppConfiguration.swift": {
+      "executable": false,
+      "sha256": "1bf851e7fbf443ffa134de7e724fa8a5e8c48ecdb23036b61167ea2f6a6338a2"
+    },
+    "Multimusic/Assets.xcassets/AppIcon.appiconset/AppIcon.png": {
+      "executable": false,
+      "sha256": "d7d00a06a0159fc199ae4ef0d7ecbb38010bcfcf20f83a60d2d32ff5d717b015"
+    },
+    "Multimusic/Assets.xcassets/AppIcon.appiconset/Contents.json": {
+      "executable": false,
+      "sha256": "852920cb36e95beb53771138a4b8195a16fcce1cc31250632f246081cc638f9a"
+    },
+    "Multimusic/Assets.xcassets/Contents.json": {
+      "executable": false,
+      "sha256": "f5fb0e1f3a8142892ed092efb5955c1c2cc537003a89ad7bbdb9dade7fe8985f"
+    },
+    "Multimusic/CatalogResolver.swift": {
+      "executable": false,
+      "sha256": "7e3744679712b0017c521fc108a2e24bc75baf42f5a0a3532a54fdce179305cc"
+    },
+    "Multimusic/ContentView.swift": {
+      "executable": false,
+      "sha256": "0aadbe952d0043ff2fb20b1f7c07d396f3db8bc5ef0acfa2704cf364f997d249"
+    },
+    "Multimusic/Core/CatalogCache.swift": {
+      "executable": false,
+      "sha256": "2b3163b381347ac4892ebca20b5c0623d669c4dd7801e6cd33701bfcae34fc1a"
+    },
+    "Multimusic/Core/Handoff.swift": {
+      "executable": false,
+      "sha256": "ed4f419dbe46bd0097ae3b9c819b2b9ed77b548e1372ab8053212e356103140f"
+    },
+    "Multimusic/Core/Matching.swift": {
+      "executable": false,
+      "sha256": "8c535bd9c3f570b4a44397a5bf35ef9c56f4d29a23d67e19c24c2579a2773cbb"
+    },
+    "Multimusic/Core/Models.swift": {
+      "executable": false,
+      "sha256": "1b9fef02d497f21b879345820f2a113460f5aed4e7342310922ce71c898c9b6e"
+    },
+    "Multimusic/Core/RetryPolicy.swift": {
+      "executable": false,
+      "sha256": "8e4225c529ab7f48e23cc6e468ab0cb5c77fa19b7cf15fe07ab8a4c3353ffa2d"
+    },
+    "Multimusic/Info.plist": {
+      "executable": false,
+      "sha256": "050b6c620b7b6a4c3262b46c4b188d7f1f57b14dad9698456afc7028ccf00ab0"
+    },
+    "Multimusic/Multimusic.entitlements": {
+      "executable": false,
+      "sha256": "ca0a6484f7355ccfa18628c9928f0115fbc6fc3f3a558ea5f39b65462cc65c69"
+    },
+    "Multimusic/MultimusicApp.swift": {
+      "executable": false,
+      "sha256": "ce2f5ecb5136440d4b01ceb6525bd1d1dedc3d43d6559a2aa09e692cca0e3c0f"
+    },
+    "Multimusic/MusicSession.swift": {
+      "executable": false,
+      "sha256": "30b10f22a5e6a13713ab3aed47dc0556afac8f8ac12deb024db0cff22c484ecc"
+    },
+    "Multimusic/PlaybackCheckpoint.swift": {
+      "executable": false,
+      "sha256": "da30077f793a048203766d711d20590a4a390652d1d233b5719a216d044d5a27"
+    },
+    "Multimusic/Resources/QueueProbe.js": {
+      "executable": false,
+      "sha256": "fd9c8bb96747bb074fa75fcda48c02dded6bd58799bd349c3a258263df515b9d"
+    },
+    "Multimusic/Resources/Spotify.js": {
+      "executable": false,
+      "sha256": "1ddf323c265831e1f8ff7acada1a5d0eb3106a8fad6b4dd4c4aab25f69e71854"
+    },
+    "Multimusic/Resources/YouTubeMusic.js": {
+      "executable": false,
+      "sha256": "4a3aaecf3e80c0c11d8b7cc0e2fcabeb107f26d6da1dc6b052aa1efa7887a81d"
+    },
+    "Multimusic/SharedPlaybackOwnership.swift": {
+      "executable": false,
+      "sha256": "0b34a92b723a1764ab8c4f6f3e41dbf9ab3cbf850f5ef2d792cff81a2bf3c02e"
+    },
+    "Multimusic/SpotifyAssets.xcassets/Contents.json": {
+      "executable": false,
+      "sha256": "10e3b5dc202f1cd9fad1f688c8fc9fe9e9669bf3f8295e67d216b10fd99b6f49"
+    },
+    "Multimusic/SpotifyAssets.xcassets/SpotifyIcon.appiconset/AppIcon.png": {
+      "executable": false,
+      "sha256": "8a857189f3650eef655765744123595347a4d72d5a169155848010beb69136e4"
+    },
+    "Multimusic/SpotifyAssets.xcassets/SpotifyIcon.appiconset/Contents.json": {
+      "executable": false,
+      "sha256": "6ad2c5c3bbcf972c7f02d217d6afcac3f24a10e30510c7e2d06c582371ed9d22"
+    },
+    "Multimusic/SpotifyInfo.plist": {
+      "executable": false,
+      "sha256": "5af656baaed6d229c28478fca9ea30c63224c8913bb73c2824791c5c192e1026"
+    },
+    "Multimusic/TestDiagnostics.swift": {
+      "executable": false,
+      "sha256": "498179d9d0848ca96d717c91f4aef9a2600078a9bd2d82611b45720c8cf5a064"
+    },
+    "Multimusic/YouTubeMusicWebView.swift": {
+      "executable": false,
+      "sha256": "86414cbe45714db67fb12c6e9bf7ce7241be4d2a587a21865f07b7c1a695237a"
+    },
+    "Package.swift": {
+      "executable": false,
+      "sha256": "d3a3f3bfb4261e31c916a0a06e86dbfc03862b3897a7763c5033c24719c98fb6"
+    },
+    "README.md": {
+      "executable": false,
+      "sha256": "1be3e5288e7aca31716df95773a25b4c77d7b0a868b658d906dc2a00d4c5911a"
+    },
+    "SECURITY.md": {
+      "executable": false,
+      "sha256": "bcf18deba6d6fc4353302c44504229c38fde6d22ae4afe4f4ef94d4aee797a35"
+    },
+    "Tests/Fixtures/Queen/0xcWxI1fUxfD6LrrljUH7L.json": {
+      "executable": false,
+      "sha256": "9d1c423a4358c9aa786b3f64bd8bd0cc1a3583b13475741348f87d0125fea14a"
+    },
+    "Tests/Fixtures/Queen/11fDQmW6T3zyX6OEKKF11O.json": {
+      "executable": false,
+      "sha256": "24e67f650ab08029732076071df05d43adae96fe51cc450798c819f5124d311f"
+    },
+    "Tests/Fixtures/Queen/1OuuQNfGJ0KwD4KUJ7tuzj.json": {
+      "executable": false,
+      "sha256": "79fa2e435dd1179d05055102635fde1fa268f87a16467385f3defbe5ea1e186c"
+    },
+    "Tests/Fixtures/Queen/4GHk8YtewHGbk6HsVJ0mcT.json": {
+      "executable": false,
+      "sha256": "719ccb4d4eb4f80a824924b8509c7c61dfc47d44101410305cf12c2e808bced5"
+    },
+    "Tests/Fixtures/Queen/68Fa3IMF05Rj9lX3TRJepp.json": {
+      "executable": false,
+      "sha256": "7e14532c2e4bc5ef7dbc3997e6d3f2dde419b94eec8448988f8eb27fdc2ec711"
+    },
+    "Tests/MultimusicCoreTests/CatalogTests.swift": {
+      "executable": false,
+      "sha256": "b0510f7acc53a3903930951742da20ae7fc2a8f6345096a9f2762fcdea459d30"
+    },
+    "Tests/MultimusicCoreTests/FooterTests.swift": {
+      "executable": false,
+      "sha256": "17be3cbd4a0e842fef179debc745606297adf2a58f72a82b3f989d635af89315"
+    },
+    "Tests/MultimusicCoreTests/HandoffTests.swift": {
+      "executable": false,
+      "sha256": "9ff007c4341f297323d303e5053e33cd4940d311f6716166aef4dad26cf9634b"
+    },
+    "Tests/MultimusicCoreTests/MatchingTests.swift": {
+      "executable": false,
+      "sha256": "433dfe08936db0d91ca88b75d93311eb907e15e2e733345266aceb4ccab78f93"
+    },
+    "Tests/MultimusicCoreTests/OpusFixTests.swift": {
+      "executable": false,
+      "sha256": "9f838856cd2917b273297bd1671284f0377cea040576375f13f3118321e01067"
+    },
+    "Tests/MultimusicCoreTests/QueryLadderTests.swift": {
+      "executable": false,
+      "sha256": "7cfa0efeafa73cda2ede095b4b69e631ca5d9dc0283937fe45e82593c1cccb3b"
+    },
+    "Tests/MultimusicCoreTests/RetryPolicyTests.swift": {
+      "executable": false,
+      "sha256": "f96f6d20c9ed6918f0fba6682a518035596b6511cd9471f7d504ad3b0505c536"
+    },
+    "Tests/MultimusicCoreTests/Round2Tests.swift": {
+      "executable": false,
+      "sha256": "f5d8749cc65ad2c58dea63ee402cba1d5f8dd943bdb65586a3a419ef9862b69b"
+    },
+    "Tests/MultimusicCoreTests/Round5Tests.swift": {
+      "executable": false,
+      "sha256": "3d87e06093d3bba627d04f8633a35c7b112d0f1b0952fc74ee0dfbea4839c533"
+    },
+    "Tests/Native/AppConfigurationChecks.swift": {
+      "executable": false,
+      "sha256": "7581b5ab3c05d88dac332dbdb823c7db685cb59778362f23cf99bb4036c24e44"
+    },
+    "Tests/Native/CommandDedupChecks.swift": {
+      "executable": false,
+      "sha256": "0be2b90d1ecf5fe1edb2e85934c2fc49ddca2cf3cc79fe9e43c7e0b84baac655"
+    },
+    "Tests/Native/DiagnosticSanitizerChecks.swift": {
+      "executable": false,
+      "sha256": "ce0fa613be1d529a2e62ebd2b109285ad56eb1c14f1eac6a68625df412dbf118"
+    },
+    "Tests/Native/LocalDiagnosticsChecks.swift": {
+      "executable": false,
+      "sha256": "1f1a0b5067e882d0ce8cad8d0aea64b910d54d8417f364ad0ca434f4756f0fe2"
+    },
+    "Tests/Native/MatchingRetryChecks.swift": {
+      "executable": false,
+      "sha256": "0374ce61ce0dfd7d55d6c33fcd17e6b3d590bedd9a07a564da8dd56206c42724"
+    },
+    "Tests/Native/PlaybackCheckpointChecks.swift": {
+      "executable": false,
+      "sha256": "4be64fd6af14b1e1ebb5318774db6a29c2f6217cbfc774e37a1c3e6d75977136"
+    },
+    "Tests/Native/RestoreSavedQueueChecks.swift": {
+      "executable": false,
+      "sha256": "3bdc4555f5e5ecc362d559b025ef9079329b513fb8e524419bd48ca6734e63c3"
+    },
+    "Tests/Native/SharedPlaybackOwnershipChecks.swift": {
+      "executable": false,
+      "sha256": "bce9d930b1e97145bb5ea2a27da467c8928ab144e7e4b26e5be0bb8483f322c8"
+    },
+    "Tests/Native/SkipReasonsChecks.swift": {
+      "executable": false,
+      "sha256": "8bb95c94089f8674883278fd4e400b12cb42ed870435d3f6a6b81e48f8e98348"
+    },
+    "Tests/Native/TransportObservationChecks.swift": {
+      "executable": false,
+      "sha256": "fb999f490ca34ce6c8a97f5aa764d83ceaf228ddfc0111a871770ea5a7116252"
+    },
+    "Tests/Native/WebsiteDiagnosticsChecks.swift": {
+      "executable": false,
+      "sha256": "f6b1fbe989926c956b794f741af32c8d953af996d10b0c6e14cb434d8a83bf6d"
+    },
+    "Tests/Native/run_checks.py": {
+      "executable": false,
+      "sha256": "d78a7e02c92abd8ecff061b5d757168800742c9f3dd7a6fcefcaa4bbfc609480"
+    },
+    "Tests/Signing/test_signing_entitlements.py": {
+      "executable": false,
+      "sha256": "a75e1ef12f3665725a8a8ddad7fa351d32d26d77665cf20f5468f1d3957e307d"
+    },
+    "Tests/WebAdapter/adapter.test.mjs": {
+      "executable": false,
+      "sha256": "fc9d145da960be4d1d9be30598d566efd0aed492e9f09d970faaf7166a295efe"
+    },
+    "Tests/WebAdapter/dom-fixture.mjs": {
+      "executable": false,
+      "sha256": "baad454859bc3492ae004a31c909d36da734a3ddf46dacac457d26c305e9d2a4"
+    },
+    "Tests/WebAdapter/queue-probe.test.mjs": {
+      "executable": false,
+      "sha256": "9d5393d82f5f53d43d7f88b7969923a921d142da79bd6b5e5c986c4ea74b73bb"
+    },
+    "Tests/WebAdapter/spotify-bootstrap.test.mjs": {
+      "executable": false,
+      "sha256": "adb4f13e691d55d04ed5005ad554f0a7a8603b97528529b3af64f5f0a9652452"
+    },
+    "Tests/WebAdapter/spotify-mobile.test.mjs": {
+      "executable": false,
+      "sha256": "e02b8acb99f9d3dceee9e1f281b0b7d4c067fb392454d717ef438bec568fa1fc"
+    },
+    "docs/INSTALL.md": {
+      "executable": false,
+      "sha256": "8bcb912221c8c715ee8b6b8dd176115dfaf5980ef0b63919acd648e8d2383bdb"
+    },
+    "docs/Multimusic-release-public.pem": {
+      "executable": false,
+      "sha256": "764530a1a03d0574c7e55e516f8091b44b6a25ed5768b68e1747435990699e13"
+    },
+    "docs/PRIVACY.md": {
+      "executable": false,
+      "sha256": "24fb4fc6b6698c4a3e0cd753394fb8dc52ed2d62959a3720ba46bf7024b1292a"
+    },
+    "docs/THIRD_PARTY.md": {
+      "executable": false,
+      "sha256": "71b76dd8fd223a5c0519942ccd84f1b8d2390a1d2611e947c7586b2ebc73c3ca"
+    },
+    "docs/VERIFICATION.md": {
+      "executable": false,
+      "sha256": "d5e10cc4ed638f5d29e4e3946c71eb84cfe07713385b8d6e85abb69df34fcc4d"
+    },
+    "scripts/package.sh": {
+      "executable": true,
+      "sha256": "0c44c74c58ca7c939b1f6d94574adf60cc0b610797fdd99f5c4639afcd12f91b"
+    },
+    "scripts/setup-signing-tools.sh": {
+      "executable": true,
+      "sha256": "213447731c633a57a8f5744856126d4f8c8e023c9b7b8a7785242c2dbf10a397"
+    },
+    "scripts/sign.sh": {
+      "executable": true,
+      "sha256": "c498206766c8500269cd7bfacd41bf8cf3716d0970e9276cf6a5a33864113ea1"
+    },
+    "scripts/signing_entitlements.py": {
+      "executable": false,
+      "sha256": "24b895d6ee7fbab66a71acf39a2715db5ebfb1cfa67f5db17ecf6491743d8c67"
+    }
+  },
+  "formatVersion": 2
+}
