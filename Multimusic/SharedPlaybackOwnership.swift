@@ -58,6 +58,7 @@ final class SharedPlaybackOwnership {
     private let ownerBundleID: String
     private let primaryOwnerBundleID: String
     private let accessGroup: String?
+    private let privateKeychain: Bool
     private let service: String
     private static var launchProbeHandled = false
     private static let processLaunchID = UUID()
@@ -65,13 +66,15 @@ final class SharedPlaybackOwnership {
     private let now: () -> Date
 
     init(ownerBundleID: String = AppConfiguration.current.bundleIdentifier,
-         primaryOwnerBundleID: String = AppConfiguration.current.primaryBundleIdentifier,
+         primaryOwnerBundleID: String = AppConfiguration.current.ownershipPrimaryBundleIdentifier,
          accessGroup: String? = AppConfiguration.current.sharedPlaybackAccessGroup,
+         privateKeychain: Bool = AppConfiguration.current.sharedPlaybackPrivate,
          service: String? = nil,
          launchID: UUID? = nil, now: @escaping () -> Date = Date.init) {
         self.ownerBundleID = ownerBundleID
         self.primaryOwnerBundleID = primaryOwnerBundleID
-        self.accessGroup = accessGroup
+        self.accessGroup = privateKeychain ? nil : accessGroup
+        self.privateKeychain = privateKeychain
         self.service = service ?? primaryOwnerBundleID + ".sharedPlayback.v1"
         self.launchID = launchID ?? Self.processLaunchID
         self.now = now
@@ -290,7 +293,7 @@ final class SharedPlaybackOwnership {
     private func query(_ account: String, operationID: UUID? = nil) throws -> [String: Any] {
         guard !ownerBundleID.isEmpty else { throw Failure.unavailable(errSecParam) }
         #if os(iOS)
-        guard let accessGroup, !accessGroup.isEmpty else { throw Failure.unavailable(errSecMissingEntitlement) }
+        guard privateKeychain || !(accessGroup ?? "").isEmpty else { throw Failure.unavailable(errSecMissingEntitlement) }
         #endif
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: service, kSecAttrAccount as String: account,

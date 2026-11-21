@@ -120,6 +120,10 @@ struct ContentView: View {
                             .disabled(music.preparing)
                         Text("The reference test replaces Music’s current queue. Turn off Autoplay (∞) and Repeat in Music so a prepared queue can finish.")
                             .font(.caption).foregroundStyle(.secondary)
+                        Text(AppConfiguration.current.sharedPlaybackPrivate
+                             ? "Queue protection: this app only. Its signature has no keychain group shared with the other Multimusic app, so they cannot see each other’s queue ownership."
+                             : "Queue protection: \(AppConfiguration.current.sharedPlaybackDescription).")
+                            .font(.caption).foregroundStyle(.secondary).textSelection(.enabled)
                     }
                 }
                 Section(AppConfiguration.current.websiteName) {

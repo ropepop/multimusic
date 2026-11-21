@@ -4,7 +4,9 @@
 
 Both apps need an iPhone on iOS 18 or later, Apple's Music app and an active Apple Music subscription. The routes below use a Mac, full Xcode, Python 3, and signing files that belong to you. This is a self-install project, not an App Store or one-tap web installation.
 
-**Prerelease verification — 18 November 2026.** The exact YouTube Music 1.2/build 49 and Spotify 1.0/build 38 packages were signed locally by the recipient. Both passed fresh installation, first launch and Apple Music setup on iPhone. See the [verification record](VERIFICATION.md).
+**Prerelease verification — 21 November 2026.** Automated checks passed for YouTube Music 1.3 (52) and Spotify 1.1 (41). The owner confirmed playback on iPhone with Feather using builds 51/40, which differ from 52/41 only in version numbers. The full iPhone checklist was not rerun for 52/41. See the [verification record](VERIFICATION.md).
+
+Setup shows when Feather or another signer leaves the app using a private keychain. Queue protection works within each app in this mode. The two apps cannot see each other’s playback ownership.
 
 Apple explains [developer account limits](https://developer.apple.com/help/account/basics/about-your-developer-account/) and [supported iOS capabilities](https://developer.apple.com/help/account/reference/supported-capabilities-ios/). Personal Team provisioning normally expires after seven days and is subject to app and device limits. Renewing a signature must retain the same identifiers and shared group if you want to preserve saved state. No purchase or paid enrollment is part of these instructions.
 
@@ -30,7 +32,7 @@ These produce `build/Multimusic-unsigned.ipa` and `build/MultimusicSpotify-unsig
 
 ## Route B: download an IPA and sign it
 
-For the prerelease, download `Multimusic-unsigned.ipa`, `MultimusicSpotify-unsigned.ipa`, `SHA256SUMS` and `SHA256SUMS.sig` from the same [GitHub release](../../../releases/tag/2026-11-18). Get the signing scripts from that release's source archive and the pinned [Multimusic public key](Multimusic-release-public.pem) through a trusted copy of the source.
+For the prerelease, download `Multimusic-unsigned.ipa`, `MultimusicSpotify-unsigned.ipa`, `SHA256SUMS` and `SHA256SUMS.sig` from the same [GitHub release](../../../releases/tag/2026-11-21). Get the signing scripts from that release's source archive and the pinned [Multimusic public key](Multimusic-release-public.pem) through a trusted copy of the source.
 
 Run the first command in the directory with the public key and downloads. Compare the result with the pinned SHA-256 fingerprint of the DER-encoded public key before running the remaining commands.
 

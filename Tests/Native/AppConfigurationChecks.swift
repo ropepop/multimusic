@@ -55,6 +55,29 @@ struct AppConfigurationChecks {
         }
         let incomplete = try configuration(["MultimusicDiagnosticsOrigin": valid["MultimusicDiagnosticsOrigin"]!])
         precondition(incomplete.diagnosticsUpload == nil)
-        print("Configuration checks passed: both providers keep their identity/navigation after renaming; default diagnostics are local and private upload requires a valid explicit endpoint/database pair.")
+
+        // Shared keychain group: configured name → team-prefixed name → the app's private default group.
+        var probed = false
+        let prefix: () -> String? = { probed = true; return "ABCDE12345" }
+        let prefixed = "XYZ9876543.org.multimusic.app.playback", plain = "org.multimusic.app.playback"
+        precondition(SharedAccessGroup.resolve(configured: prefixed, teamPrefix: prefix, isAccessible: { _ in true }) == .shared(prefixed) && !probed)
+        precondition(SharedAccessGroup.resolve(configured: plain, teamPrefix: prefix,
+                                               isAccessible: { $0 == "ABCDE12345." + plain }) == .shared("ABCDE12345." + plain))
+        // A refused prefixed name is never re-prefixed; with only the default group granted, ownership goes private.
+        precondition(SharedAccessGroup.resolve(configured: prefixed, teamPrefix: prefix, isAccessible: { $0 == nil }) == .privateDefault)
+        precondition(SharedAccessGroup.resolve(configured: plain, teamPrefix: prefix, isAccessible: { $0 == nil }) == .privateDefault)
+        precondition(SharedAccessGroup.resolve(configured: plain, teamPrefix: prefix, isAccessible: { _ in false }) == .unavailable(plain))
+        for bad in [nil, "", "abc", "ABCDE1234", "ABCDE12345.x"] as [String?] {
+            precondition(SharedAccessGroup.resolve(configured: plain, teamPrefix: { bad },
+                                                   isAccessible: { $0 != nil && $0 != plain }) == .unavailable(plain))
+        }
+        precondition(SharedAccessGroup.resolve(configured: nil, teamPrefix: prefix, isAccessible: { _ in true }) == .privateDefault)
+        precondition(SharedAccessGroup.teamPrefix(ofGroup: "ABCDE12345.*") == "ABCDE12345")
+        precondition(SharedAccessGroup.teamPrefix(ofGroup: "org.multimusic.app") == nil)
+        // Non-main bundles (checks, macOS) keep the configured group and shared mode.
+        let shared = try configuration(["SharedPlaybackKeychainAccessGroup": prefixed, "MultimusicPrimaryBundleIdentifier": "org.multimusic.app"])
+        precondition(!shared.sharedPlaybackPrivate && shared.sharedPlaybackAccessGroup == prefixed)
+        precondition(shared.ownershipPrimaryBundleIdentifier == "org.multimusic.app")
+        print("Configuration checks passed: both providers keep their identity/navigation after renaming; default diagnostics are local and private upload requires a valid explicit endpoint/database pair; an unprefixed shared group resolves under the signer's team prefix, else private mode.")
     }
 }

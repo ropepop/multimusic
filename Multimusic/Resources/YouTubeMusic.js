@@ -7,7 +7,7 @@
   const MAX_TRACKS = 50;
   const PLAYER_ANY = "ytmusic-player-bar,ytmusic-player-page,ytmusic-player";
   const PLAYER = PLAYER_ANY;
-  const ARTWORK = "ytmusic-player-bar img.image,ytmusic-player-page ytmusic-player-controls img.image,ytmusic-player #song-image img,ytmusic-player #song-video video.video-stream.html5-main-video";
+  const ARTWORK = "ytmusic-miniplayer img.ytmusicTrackInfoThumbnail,ytmusic-player-bar img.image,ytmusic-player-page ytmusic-player-controls img.image,ytmusic-player #song-image img,ytmusic-player #song-video video.video-stream.html5-main-video";
   const PLAY = '.play-pause-button,#play-pause-button,.ytp-play-button,button[aria-label="Play"],button[aria-label="Pause"],[aria-label="Play" i],[aria-label="Pause" i]';
   const NEXT = '.next-button,#next-button,.ytp-next-button,button[aria-label="Next"],button[aria-label="Next song"],[aria-label^="Next" i]';
   const PREVIOUS = '.previous-button,#previous-button,.ytp-prev-button,button[aria-label="Previous"],button[aria-label="Previous song"],[aria-label^="Previous" i]';
@@ -16,11 +16,14 @@
   const CONTROL_TAGS = 'ytmusic-play-button-renderer,yt-icon-button,tp-yt-paper-icon-button,button,[role="button"]';
   const PROGRESS = '#progress-bar,.ytp-progress-bar,[role="slider"][aria-label="Seek slider"],#slider';
   const MINI_ROOT = "ytmusic-miniplayer", MINI_PROGRESS = "input.ytMusicMiniPlayerProgressBar", SEEK_INPUT = `${PROGRESS},${MINI_PROGRESS},input[type="range"]`;
+  // Narrow layouts replace ytmusic-player-bar with ytmusic-miniplayer hosts (track info + Play/Next).
+  const PAINT_ROOT = `${PLAYER},${MINI_ROOT}`;
+  const MINI_TITLE = ".ytmusicTrackInfoTitle", MINI_BYLINE = ".ytmusicTrackInfoByline";
   const seekRoot = node => closestDeep(node, `ytmusic-player-bar,${MINI_ROOT}`) || (node.matches(MINI_PROGRESS) ? node : null);
   const TRANSPORT_NODES = `${CONTROL_TAGS},${PROGRESS}`;
   const CURRENT_TIME = ".ytp-time-current,ytmusic-player-controls .current-time";
   const TOTAL_TIME = ".ytp-time-duration,ytmusic-player-controls .total-time";
-  const CONTROLS = `.title,.byline,.byline-wrapper,.time-info,${PLAY},${NEXT},${PREVIOUS},${PROGRESS},${CURRENT_TIME},${TOTAL_TIME},.ytp-title-text`;
+  const CONTROLS = `.title,.byline,.byline-wrapper,.time-info,${PLAY},${NEXT},${PREVIOUS},${PROGRESS},${CURRENT_TIME},${TOTAL_TIME},.ytp-title-text,${MINI_TITLE},${MINI_BYLINE}`;
   let lastHandledTouch = null, lastSeekAt = null, toggleParity = null;
   let collapseCandidate = null, collapseTimer = null;
   let token = null, sequence = 0, snapshot = null, renderPending = false, drag = null, lastStatus = null, touch = null;
@@ -116,7 +119,10 @@
   const playerNodes = (root, selector) => root ? deepQuery(root, selector)
     .filter(node => !closestDeep(node, PLAYER_ROW) && (!root.matches(PLAYER) || closestDeep(node, PLAYER) === root)) : [];
   const metadataNodes = (root, selector) => playerNodes(root, selector).filter(node =>
-    root.matches("ytmusic-player-bar,ytmusic-player") || node.closest("ytmusic-player-controls"));
+    root.matches(`ytmusic-player-bar,ytmusic-player,${MINI_ROOT}`) || node.closest("ytmusic-player-controls"));
+  // The video surface doubles as the collapsed player's artwork; it carries no labels or visible controls.
+  const artworkOnly = root => root.matches("ytmusic-player") && !deepQuery(root, CONTROL_TAGS).some(visible) &&
+    !playerNodes(root, CONTROLS).some(visible);
   const rowNodes = (row, selector) => [...row.querySelectorAll(selector)].filter(node => node.closest(PLAYER_ROW) === row);
   const send = payload => {
     if (payload.type === "selection") window.MultimusicQueueProbe?.capture();
@@ -972,7 +978,7 @@
     if (metadataDirty) {
       if (root.matches('ytmusic-player-bar[slot="player-bar"]')) { root.removeAttribute("inert"); root.removeAttribute("hidden"); }
       setAttribute(root, "aria-label", "Player · Apple Music");
-      for (const title of metadataNodes(root, ".ytp-title-text,.title")) {
+      for (const title of metadataNodes(root, `.ytp-title-text,.title,${MINI_TITLE}`)) {
         title.removeAttribute("is-empty");
         setLabel(title, snapshot.title || "Choose a song");
         for (const link of anchors(title)) {
@@ -1007,6 +1013,27 @@
           child.nodeValue = showAlbum ? separatorText.get(child) : "";
         }
       }
+    }
+    if (metadataDirty) for (const byline of metadataNodes(root, MINI_BYLINE)) {
+      const artist = snapshot.artist || "Apple Music";
+      const item = byline.querySelector(".ytmusicTrackInfoBylineItem") || byline;
+      setAttribute(item, "title", artist);
+      const link = anchors(item)[0];
+      const leaf = link || labelLeaf(item);
+      if (link) {
+        const href = sourceLinks.get(snapshot.sourceID)?.artist;
+        if (href) { setAttribute(link, "href", href); link.removeAttribute("aria-disabled"); }
+        else { link.removeAttribute("href"); setAttribute(link, "aria-disabled", "true"); }
+      }
+      if (!leaf.children.length) setText(leaf, artist);
+      // YouTube's view/like counts describe its own track, not Apple Music's.
+      const clearOther = node => {
+        if (node === leaf) return;
+        for (const child of node.childNodes || []) {
+          if (child.nodeType === 3) { if (child.nodeValue) child.nodeValue = ""; } else clearOther(child);
+        }
+      };
+      clearOther(item);
     }
     if (controlsDirty) {
       for (const play of playerNodes(root, PLAY)) {
@@ -1050,9 +1077,9 @@
       renderQueuedAt = null;
       if (!snapshot) return;
       if (rootsDirty) {
-        roots = [...document.querySelectorAll(PLAYER)];
+        roots = [...document.querySelectorAll(PAINT_ROOT)];
         artwork = [...document.querySelectorAll(ARTWORK)].filter(image => !image.closest(PLAYER_ROW));
-        metadataLabels = roots.flatMap(root => metadataNodes(root, ".ytp-title-text,.title,.byline,.byline-wrapper .subtitle"));
+        metadataLabels = roots.flatMap(root => metadataNodes(root, `.ytp-title-text,.title,.byline,.byline-wrapper .subtitle,${MINI_TITLE},${MINI_BYLINE}`));
         progressViews.clear();
         for (const root of roots) progressViews.set(root, cacheProgress(root));
         rootsDirty = false; metadataDirty = true; controlsDirty = true;
@@ -1079,7 +1106,7 @@
         }
         for (const root of roots) {
           paintRoot(root);
-          if (metadataDirty && visible(root) && (!metadataNodes(root, ".title,.ytp-title-text").some(node => visible(node) && text(node) === (snapshot.title || "Choose a song")) ||
+          if (metadataDirty && visible(root) && !artworkOnly(root) && (!metadataNodes(root, `.title,.ytp-title-text,${MINI_TITLE}`).some(node => visible(node) && text(node) === (snapshot.title || "Choose a song")) ||
             !playerNodes(root, PLAY).some(visible))) status("adapterChanged");
         }
         if (highlightedID !== snapshot.sourceID) {
@@ -1179,11 +1206,11 @@
     const changed = records.some(record => {
       const target = record.target instanceof Element ? record.target : record.target?.parentElement;
       if (target?.matches(ARTWORK) && !target.closest(PLAYER_ROW)) return true;
-      if (target?.matches(PLAYER)) return true;
-      if (target?.closest(PLAYER) && !target.closest(PLAYER_ROW) && target.closest(CONTROLS)) return true;
+      if (target?.matches(PAINT_ROOT)) return true;
+      if (target?.closest(PAINT_ROOT) && !target.closest(PLAYER_ROW) && target.closest(CONTROLS)) return true;
       return [...record.addedNodes || []].some(node => node instanceof Element &&
-        ((node.matches(ARTWORK) && !node.closest(PLAYER_ROW)) || node.querySelector(ARTWORK) || node.matches(PLAYER) || node.querySelector(PLAYER) ||
-          (node.closest(PLAYER) && !node.closest(PLAYER_ROW) && (node.matches(CONTROLS) || node.querySelector(CONTROLS)))));
+        ((node.matches(ARTWORK) && !node.closest(PLAYER_ROW)) || node.querySelector(ARTWORK) || node.matches(PAINT_ROOT) || node.querySelector(PAINT_ROOT) ||
+          (node.closest(PAINT_ROOT) && !node.closest(PLAYER_ROW) && (node.matches(CONTROLS) || node.querySelector(CONTROLS)))));
     });
     if (changed) { rootsDirty = true; scheduleRender(); }
   }));

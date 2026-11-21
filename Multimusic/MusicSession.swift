@@ -1701,7 +1701,16 @@ final class MusicSession: ObservableObject {
         } else if case SharedPlaybackOwnership.Failure.nativeRequestUnsettled = error {
             status = "An interrupted request is unconfirmed. Its queue has been preserved."
         } else {
-            status = "Music queue protection is unavailable. Playback has been preserved."
+            // The first sentence stays the footer headline; the cause is for Details and bug reports.
+            let cause: String
+            switch error {
+            case SharedPlaybackOwnership.Failure.unavailable(let code): cause = "Keychain error \(code)"
+            case SharedPlaybackOwnership.Failure.corrupt: cause = "Unreadable ownership record"
+            case SharedPlaybackOwnership.Failure.staleLease: cause = "Stale ownership lease"
+            default: cause = "Unexpected ownership error"
+            }
+            status = "Music queue protection is unavailable. Playback has been preserved. " +
+                "\(cause); \(AppConfiguration.current.sharedPlaybackDescription); app \(AppConfiguration.current.bundleIdentifier)."
         }
         problem = status
         return outcome(.foreignPlayback)

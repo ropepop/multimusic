@@ -1,5 +1,5 @@
 {
-  "contentSHA256": "b45a5253c41c4ddb72d2736e13ce37665a863545a6391f22be6338b5eae8c4cd",
+  "contentSHA256": "bc70eef21ea4c0416d61971bdf0fc38dbd662f98e03944670b671c15af52cc46",
   "files": {
     ".github/ISSUE_TEMPLATE/bug.yml": {
       "executable": false,
@@ -43,7 +43,7 @@
     },
     "Multimusic/AppConfiguration.swift": {
       "executable": false,
-      "sha256": "1bf851e7fbf443ffa134de7e724fa8a5e8c48ecdb23036b61167ea2f6a6338a2"
+      "sha256": "03b3dac33103e36455690a788dcdb01e35fc17aca4598f68a03fafe03ca62f20"
     },
     "Multimusic/Assets.xcassets/AppIcon.appiconset/AppIcon.png": {
       "executable": false,
@@ -63,7 +63,7 @@
     },
     "Multimusic/ContentView.swift": {
       "executable": false,
-      "sha256": "0aadbe952d0043ff2fb20b1f7c07d396f3db8bc5ef0acfa2704cf364f997d249"
+      "sha256": "03911cf56a0cf5c4e3b5bc5cdd71fb6ecb6a2c30a0355af2f3ce2b2c0316f463"
     },
     "Multimusic/Core/CatalogCache.swift": {
       "executable": false,
@@ -87,7 +87,7 @@
     },
     "Multimusic/Info.plist": {
       "executable": false,
-      "sha256": "050b6c620b7b6a4c3262b46c4b188d7f1f57b14dad9698456afc7028ccf00ab0"
+      "sha256": "fc96a095ca76fdc9f5c25536deb03d448d9db37f20cc2b3eb90862f3cfb21c67"
     },
     "Multimusic/Multimusic.entitlements": {
       "executable": false,
@@ -99,7 +99,7 @@
     },
     "Multimusic/MusicSession.swift": {
       "executable": false,
-      "sha256": "30b10f22a5e6a13713ab3aed47dc0556afac8f8ac12deb024db0cff22c484ecc"
+      "sha256": "af7a2aad312fa8f2e1e2f3cae47f78320f0c463b27c895f8e00ade695d53836e"
     },
     "Multimusic/PlaybackCheckpoint.swift": {
       "executable": false,
@@ -115,11 +115,11 @@
     },
     "Multimusic/Resources/YouTubeMusic.js": {
       "executable": false,
-      "sha256": "4a3aaecf3e80c0c11d8b7cc0e2fcabeb107f26d6da1dc6b052aa1efa7887a81d"
+      "sha256": "679d384536f608c0d77ac3f3b6c167454319be7a140c5b9765af61b2ab2374cd"
     },
     "Multimusic/SharedPlaybackOwnership.swift": {
       "executable": false,
-      "sha256": "0b34a92b723a1764ab8c4f6f3e41dbf9ab3cbf850f5ef2d792cff81a2bf3c02e"
+      "sha256": "d626227d1c305a6f39df948d5d0cdf1760c806b53ffe951009f6a0f8aaa192b3"
     },
     "Multimusic/SpotifyAssets.xcassets/Contents.json": {
       "executable": false,
@@ -135,7 +135,7 @@
     },
     "Multimusic/SpotifyInfo.plist": {
       "executable": false,
-      "sha256": "5af656baaed6d229c28478fca9ea30c63224c8913bb73c2824791c5c192e1026"
+      "sha256": "ca865c9cff1b5c8ca602914539f973c968ba2092a08b4879b585128549e87b8a"
     },
     "Multimusic/TestDiagnostics.swift": {
       "executable": false,
@@ -151,7 +151,7 @@
     },
     "README.md": {
       "executable": false,
-      "sha256": "67b4570868772d22ce255d0b085b38c6f098382ec557006097850d34eef2f5a3"
+      "sha256": "da34bb7b709d21c60267306dae92b8a03fb71b13460835c8b5e52cdee325ccc7"
     },
     "SECURITY.md": {
       "executable": false,
@@ -215,7 +215,7 @@
     },
     "Tests/Native/AppConfigurationChecks.swift": {
       "executable": false,
-      "sha256": "7581b5ab3c05d88dac332dbdb823c7db685cb59778362f23cf99bb4036c24e44"
+      "sha256": "cc0ea3120d44f0f09351fbcb971621e47a9f43aaf2830a6888cdd761c09c9752"
     },
     "Tests/Native/CommandDedupChecks.swift": {
       "executable": false,
@@ -267,7 +267,7 @@
     },
     "Tests/WebAdapter/adapter.test.mjs": {
       "executable": false,
-      "sha256": "fc9d145da960be4d1d9be30598d566efd0aed492e9f09d970faaf7166a295efe"
+      "sha256": "df4afd51014fb62510a7d6c46598df3d47f21ad74813c4cd8fc96ce11eb94472"
     },
     "Tests/WebAdapter/dom-fixture.mjs": {
       "executable": false,
@@ -287,7 +287,7 @@
     },
     "docs/INSTALL.md": {
       "executable": false,
-      "sha256": "fd1584b0aeddf178cb87755d45a19c346b4c548c2fae382a32fa98a652414efd"
+      "sha256": "d054b607f41dd44ed6892394203e81c8f6f69b20fbe68a42ffab1c610549117b"
     },
     "docs/Multimusic-release-public.pem": {
       "executable": false,
@@ -303,7 +303,7 @@
     },
     "docs/VERIFICATION.md": {
       "executable": false,
-      "sha256": "b2f203254f59f14f171d0f9362053fb65dc788b69102e689cc67981a71c1af9b"
+      "sha256": "e28e2779607bf4d790d9f46f1a9546870ec12057adfc341f2d69372d670bb117"
     },
     "scripts/package.sh": {
       "executable": true,

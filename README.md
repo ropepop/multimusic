@@ -11,9 +11,11 @@ Both apps use your Apple Music subscription for sound. They read the music infor
 
 ## Release status
 
-**Prerelease verification — 18 November 2026.** The exact YouTube Music 1.2/build 49 and Spotify 1.0/build 38 packages passed recipient signing, fresh installation, first launch and Apple Music setup on iPhone. Each app matched all 14 songs on Daft Punk’s *Discovery* and advanced the Apple Music queue from “One More Time” to “Aerodynamic.” See the [verification record](docs/VERIFICATION.md).
+**Prerelease verification — 21 November 2026.** Automated checks passed for YouTube Music 1.3 (52) and Spotify 1.1 (41). The owner confirmed playback on iPhone with Feather using builds 51/40, which differ from 52/41 only in version numbers. The full iPhone checklist was not rerun for 52/41. See the [verification record](docs/VERIFICATION.md).
 
-For the prerelease, download the unsigned IPAs and signed checksum manifest from [GitHub Releases](../../releases/tag/2026-11-18).
+Setup shows when Feather or another signer leaves the app using a private keychain. Queue protection works within each app in this mode. The two apps cannot see each other’s playback ownership.
+
+For the prerelease, download the unsigned IPAs and signed checksum manifest from [GitHub Releases](../../releases/tag/2026-11-21).
 
 ## Requirements and installation
 

@@ -2219,3 +2219,42 @@ test("Round 7: a thumbnail alone is never the aggregate player root", () => {
   assert.equal(fields.aggregateRoot, "none");
   assert.deepEqual([fields.barX, fields.barY, fields.barWidth, fields.barHeight], ["0", "0", "0", "0"]);
 });
+
+// Narrow desktop layout (the app's iPhone view): no visible player bar; a layout-level ytmusic-miniplayer
+// holds track info + Play/Next, and the 48px ytmusic-player video surface overlays its artwork.
+function smallViewportMiniEnvironment({ withTitle = true } = {}) {
+  const env = start();
+  env.bar.setAttribute("hidden", "");
+  const surface = env.document.body.appendChild(element("ytmusic-player", { id: "player" }, [
+    element("button", { class: "ytp-play-button", hidden: "" })]));
+  surface.rect = { left: 16, top: 818, width: 48, height: 48 };
+  const link = element("a", { class: "ytAttributedStringLink", role: "button" }, [], "Ellisar");
+  const info = element("ytmusic-track-info", { class: "ytmusicTrackInfoHost" }, [
+    element("img", { class: "ytmusicTrackInfoThumbnail", src: "https://i.ytimg.com/vi/youtubeOwn/default.jpg" }),
+    ...(withTitle ? [element("div", { class: "ytmusicTrackInfoTitle", title: "NOT ENOUGH" }, [element("span", {}, [], "NOT ENOUGH")])] : []),
+    element("div", { class: "ytmusicTrackInfoByline" }, [element("span", { class: "ytmusicTrackInfoBylineItem", title: "Ellisar • NOT ENOUGH • 2026" }, [link])])]);
+  const play = element("button", { title: "Play", "aria-label": "Play" }, [element("svg", {}, [element("path", { d: "M0" })])]);
+  const next = element("button", { title: "Next", "aria-label": "Next" });
+  const mini = env.document.body.appendChild(element("ytmusic-miniplayer", { slot: "player-bar", class: "ytMusicMiniPlayerHost ytMusicMiniPlayerHostSmallViewport" }, [
+    element("div", { class: "ytMusicSmallViewportMiniplayerHost" }, [info, element("div", { class: "ytMusicSmallViewportMiniplayerControls" }, [play, next])])]));
+  mini.rect = { left: 0, top: 802, width: 402, height: 72 };
+  env.mutate([{ type: "childList", target: env.document.body, addedNodes: [surface, mini], removedNodes: [] }]);
+  return { env, mini, link, play };
+}
+
+test("small-viewport mini-player is painted from Apple Music and the artwork surface is not a broken player", () => {
+  const { env, mini, link, play } = smallViewportMiniEnvironment();
+  const title = mini.querySelector(".ytmusicTrackInfoTitle");
+  assert.equal(title.textContent, env.snapshot.title);
+  assert.equal(title.getAttribute("title"), env.snapshot.title);
+  assert.equal(link.textContent, env.snapshot.artist);
+  assert.equal(mini.querySelector(".ytmusicTrackInfoBylineItem").getAttribute("title"), env.snapshot.artist);
+  assert.equal(mini.querySelector("img.ytmusicTrackInfoThumbnail").getAttribute("src"), `https://i.ytimg.com/vi/${env.snapshot.sourceID}/hqdefault.jpg`);
+  assert.ok(["Play", "Pause"].includes(play.getAttribute("aria-label")));
+  assert.equal(env.messages.some(value => value.status === "adapterChanged"), false);
+});
+
+test("a visible mini-player that loses its title still reports adapterChanged", () => {
+  const { env } = smallViewportMiniEnvironment({ withTitle: false });
+  assert.equal(env.messages.some(value => value.status === "adapterChanged"), true);
+});

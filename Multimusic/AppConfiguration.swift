@@ -1,4 +1,79 @@
 import Foundation
+import Security
+
+/// Xcode and `sign.sh` write the team-prefixed shared group into Info.plist. On-device signers such as
+/// Feather keep the unsigned, unprefixed name and embed the provisioning profile's keychain groups as-is,
+/// so the configured group may be refused with errSecMissingEntitlement. Resolution order:
+/// configured group → configured group under the app's team prefix → the app's own default (private) group.
+/// Private mode keeps each app's queue protection working but cannot coordinate between the two apps.
+enum SharedAccessGroup {
+    enum Resolution: Equatable, Sendable {
+        case shared(String)
+        case privateDefault
+        case unavailable(String?)
+    }
+
+    static func teamPrefix(ofGroup group: String) -> String? {
+        guard let dot = group.firstIndex(of: ".") else { return nil }
+        let prefix = String(group[..<dot])
+        return prefix.range(of: "^[A-Z0-9]{10}\\z", options: .regularExpression) != nil ? prefix : nil
+    }
+
+    /// `isAccessible(nil)` tests the app's default keychain group.
+    static func resolve(configured: String?, teamPrefix: () -> String?, isAccessible: (String?) -> Bool) -> Resolution {
+        if let configured, !configured.isEmpty {
+            if isAccessible(configured) { return .shared(configured) }
+            if Self.teamPrefix(ofGroup: configured) == nil, let prefix = teamPrefix(),
+               Self.teamPrefix(ofGroup: prefix + ".x") == prefix {
+                let candidate = prefix + "." + configured
+                if isAccessible(candidate) { return .shared(candidate) }
+            }
+        }
+        return isAccessible(nil) ? .privateDefault : .unavailable(configured)
+    }
+
+    #if os(iOS)
+    private static func probeItem(service: String, group: String?) -> [String: Any] {
+        var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: service,
+                                    kSecAttrAccount as String: "probe", kSecAttrSynchronizable as String: false]
+        if let group { query[kSecAttrAccessGroup as String] = group }
+        return query
+    }
+
+    /// Adding (not reading) is what reliably reports errSecMissingEntitlement for a group outside the signature.
+    static func keychainAllows(_ group: String?) -> Bool {
+        let query = probeItem(service: "org.multimusic.accessGroupProbe", group: group)
+        var item = query
+        item[kSecValueData as String] = Data()
+        item[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
+        let status = SecItemAdd(item as CFDictionary, nil)
+        guard status == errSecSuccess || status == errSecDuplicateItem else { return false }
+        SecItemDelete(query as CFDictionary)
+        return true
+    }
+
+    /// An item added without an access group lands in the app's default group, which carries its team prefix.
+    static func keychainTeamPrefix() -> String? {
+        let query = probeItem(service: "org.multimusic.teamPrefixProbe", group: nil)
+        defer { SecItemDelete(query as CFDictionary) }
+        var item = query
+        item[kSecValueData as String] = Data()
+        item[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
+        item[kSecReturnAttributes as String] = true
+        var result: CFTypeRef?
+        var status = SecItemAdd(item as CFDictionary, &result)
+        if status == errSecDuplicateItem {
+            var lookup = query
+            lookup[kSecReturnAttributes as String] = true
+            lookup[kSecMatchLimit as String] = kSecMatchLimitOne
+            status = SecItemCopyMatching(lookup as CFDictionary, &result)
+        }
+        guard status == errSecSuccess, let attributes = result as? [String: Any],
+              let group = attributes[kSecAttrAccessGroup as String] as? String else { return nil }
+        return teamPrefix(ofGroup: group)
+    }
+    #endif
+}
 
 struct AppConfiguration: Sendable {
     static let current = AppConfiguration()
@@ -8,6 +83,8 @@ struct AppConfiguration: Sendable {
     let bundleIdentifier: String
     let primaryBundleIdentifier: String
     let sharedPlaybackAccessGroup: String?
+    /// True when no shared group is granted and ownership uses this app's own keychain group.
+    let sharedPlaybackPrivate: Bool
     let playbackEnabled: Bool
     let diagnosticsUpload: DiagnosticsUpload?
 
@@ -21,7 +98,20 @@ struct AppConfiguration: Sendable {
         let base = bundle.object(forInfoDictionaryKey: "MultimusicPrimaryBundleIdentifier") as? String ?? Self.defaultBundleBase
         primaryBundleIdentifier = base
         bundleIdentifier = bundle.bundleIdentifier ?? (provider == .spotify ? base + ".Spotify" : base)
-        sharedPlaybackAccessGroup = bundle.object(forInfoDictionaryKey: "SharedPlaybackKeychainAccessGroup") as? String
+        let configuredGroup = bundle.object(forInfoDictionaryKey: "SharedPlaybackKeychainAccessGroup") as? String
+        var resolution = SharedAccessGroup.Resolution.unavailable(configuredGroup)
+        if let configuredGroup, !configuredGroup.isEmpty { resolution = .shared(configuredGroup) }
+        #if os(iOS)
+        if bundle == .main {
+            resolution = SharedAccessGroup.resolve(configured: configuredGroup,
+                teamPrefix: SharedAccessGroup.keychainTeamPrefix, isAccessible: SharedAccessGroup.keychainAllows)
+        }
+        #endif
+        switch resolution {
+        case .shared(let group): sharedPlaybackAccessGroup = group; sharedPlaybackPrivate = false
+        case .privateDefault: sharedPlaybackAccessGroup = nil; sharedPlaybackPrivate = true
+        case .unavailable(let group): sharedPlaybackAccessGroup = group; sharedPlaybackPrivate = false
+        }
         playbackEnabled = bundle.object(forInfoDictionaryKey: "MultimusicPlaybackEnabled") as? Bool ?? (provider == .youtubeMusic)
         if let value = bundle.object(forInfoDictionaryKey: "MultimusicDiagnosticsOrigin") as? String,
            let origin = URL(string: value), origin.scheme == "https", origin.host != nil,
@@ -44,6 +134,11 @@ struct AppConfiguration: Sendable {
     var customUserAgent: String? {
         // YouTube rejects WebKit's unbranded desktop agent; Spotify uses its native mobile site.
         provider == .youtubeMusic ? "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Safari/605.1.15" : nil
+    }
+    /// In private mode nothing is shared, so this app adopts its own journal even if a signer renamed it.
+    var ownershipPrimaryBundleIdentifier: String { sharedPlaybackPrivate ? bundleIdentifier : primaryBundleIdentifier }
+    var sharedPlaybackDescription: String {
+        sharedPlaybackPrivate ? "private keychain (no shared group in this signature)" : "shared group \(sharedPlaybackAccessGroup ?? "none")"
     }
     var diagnosticsKeychainService: String { bundleIdentifier + ".testDiagnostics" }
     var diagnosticsBuildPrefix: String { provider == .spotify ? "ios-spotify" : "ios" }
